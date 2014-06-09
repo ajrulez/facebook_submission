@@ -88,7 +88,7 @@ public class ProfilePictureDownloadTask extends AsyncTask<String, Bitmap, Void> 
 		totalImageCount = userIds.length;
 		
 		if(progress != null) {
-			//progress.setTotalSize = totalImageCount;
+			progress.setMessage(String.format("Fetching %d Profile Images...", totalImageCount));
 		}
 		
 		for (String userId : userIds) {
@@ -96,6 +96,9 @@ public class ProfilePictureDownloadTask extends AsyncTask<String, Bitmap, Void> 
 				currentUserId = userId;
 				String url = String.format(PROFILE_PICTURE_URL, currentUserId);
 				Bitmap bitmap = downloadFile(url);
+				
+				// Update the cache
+				FriendUserData.putIntoCache(currentUserId, bitmap);
 				publishProgress(bitmap);
 			}
 		}
@@ -111,8 +114,9 @@ public class ProfilePictureDownloadTask extends AsyncTask<String, Bitmap, Void> 
 		super.onProgressUpdate(bitmaps);
 		if (context != null && 
 				progress != null) {
-			//progress.setProgress(++downloadedImageCount);
-			FriendUserData.putIntoCache(currentUserId, bitmaps[0]);
+			progress.setMessage(String.format("Fetched %d of %d Profile Images...", ++downloadedImageCount, totalImageCount));
+			// Don't update the Cache in onProgressUpdate, do it in doInBackground
+			//FriendUserData.putIntoCache(currentUserId, bitmaps[0]);
 		}
 	}
 	

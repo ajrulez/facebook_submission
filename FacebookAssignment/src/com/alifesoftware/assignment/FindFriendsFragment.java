@@ -18,7 +18,6 @@ import android.widget.TextView;
 
 import com.alifesoftware.assignment.model.FriendUserData;
 import com.alifesoftware.assignment.utils.NetworkUtils;
-import com.facebook.widget.ProfilePictureView;
 
 /**
  * This class is used to implement a Fragment that displays
@@ -225,14 +224,13 @@ public class FindFriendsFragment extends BaseHeadlessFragment {
 				holder.tvName.setText(arrFriendsData.get(position).getName());
 				
 				// Load the profile bitmap in InmageView
-				Bitmap bmp;
-				if(FriendUserData.getBitmapCache().size() > 0 &&
-						(bmp = FriendUserData.getBitmapCache().get(arrFriendsData.get(position).getId())) != null) {
+				try {
+					Bitmap bmp = FriendUserData.getBitmapCache().get(arrFriendsData.get(position).getId());
 					holder.profilePictureView.setImageBitmap(bmp);
 				}
 				
-				else {
-					holder.profilePictureView.setImageResource(R.drawable.ic_launcher);
+				catch(Exception e) {
+					Log.w(tagFragmentName, "Something went wrong when updating thumbnail image");
 				}
 			}
            
