@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#FFFFFF" >
+    
+    <TextView 
+        android:textSize="12.0sp"
+        android:textColor="#ff000000"
+        android:id="@+id/tvEducationType"
+        android:layout_width="80dip"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dip"
+        android:layout_marginLeft="5dip"
+        android:textIsSelectable="false"/>
+    
+    <TextView 
+        android:textSize="12.0sp"
+        android:textColor="#ff000000"
+        android:id="@+id/tvEducationYear"
+        android:layout_width="40dip"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="5dip"
+        android:layout_toRightOf="@+id/tvEducationType"
+        android:layout_alignTop="@+id/tvEducationType"
+        android:textIsSelectable="false"/>
+    
+    <TextView 
+        android:textSize="12.0sp"
+        android:textColor="#ff000000"
+        android:id="@+id/tvSchoolName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="5dip"
+        android:layout_toRightOf="@+id/tvEducationYear"
+        android:layout_alignTop="@+id/tvEducationType"
+        android:textIsSelectable="false"
+        android:gravity="left"
+        android:ellipsize="marquee"
+        android:marqueeRepeatLimit="marquee_forever"
+        android:singleLine="true"
+        android:scrollHorizontally="true"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
+        android:freezesText="true"/>
+    
+    <TextView 
+        android:textSize="12.0sp"
+        android:textColor="#ff000000"
+        android:id="@+id/tvConcentration"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tvEducationYear"
+        android:layout_alignLeft="@+id/tvEducationType"
+        android:textIsSelectable="false"
+        android:gravity="left"
+        android:ellipsize="marquee"
+        android:marqueeRepeatLimit="marquee_forever"
+        android:singleLine="true"
+        android:scrollHorizontally="true"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
+        android:freezesText="true"/>    
+    
+</RelativeLayout>

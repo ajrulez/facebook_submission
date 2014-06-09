@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:facebook="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#FFFFFF" >
+    
+    <com.facebook.widget.ProfilePictureView
+        android:id="@+id/friendsPictureThumbnailView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_marginTop="5dip"
+        android:layout_marginLeft="5dip"
+        android:gravity="center_horizontal"
+        facebook:preset_size="normal" />
+    
+    <TextView
+        android:id="@+id/textViewFriendsName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf= "@+id/friendsPictureThumbnailView"
+        android:layout_marginLeft="5dip"
+        android:layout_marginTop="5dip"
+        android:gravity="center_vertical"
+        android:textSize="16sp"
+        android:textColor="@color/Facebook"
+        android:textStyle="bold" />
+
+</RelativeLayout>

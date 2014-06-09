@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:facebook="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#FFFFFF" >
+
+    <com.facebook.widget.ProfilePictureView
+        android:id="@+id/profilePicture"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="15dip"
+        android:gravity="center_horizontal"
+        facebook:preset_size="normal" />
+
+    <TextView
+        android:id="@+id/textViewNameLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/profilePicture"
+        android:layout_marginLeft="10dip"
+        android:layout_marginTop="15dip"
+        android:text="@string/name"
+        android:textSize="15sp"
+        android:textColor="@color/Facebook"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/textViewNameValue"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/textViewNameLabel"
+        android:layout_alignLeft="@+id/profilePicture"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="15dip"
+        android:textSize="15sp"
+        android:textColor="@color/Black"
+        android:textStyle="bold" />
+    
+    <TextView
+        android:id="@+id/textViewLocationLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/textViewNameLabel"
+        android:layout_marginLeft="10dip"
+        android:layout_marginTop="15dip"
+        android:text="@string/location"
+        android:textSize="15sp"
+        android:textColor="@color/Facebook"
+        android:textStyle="bold" />
+
+    <ImageView
+        android:id="@+id/imageViewMapLauncher"
+        android:layout_width="32dip"
+        android:layout_height="32dip"
+        android:layout_alignBottom="@+id/textViewLocationLabel"
+        android:layout_marginRight="5dip"
+        android:layout_alignParentRight="true"/>
+        
+    <TextView
+        android:id="@+id/textViewLocationValue"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/textViewLocationLabel"
+        android:layout_alignLeft="@+id/profilePicture"
+        android:layout_toLeftOf="@+id/imageViewMapLauncher"
+        android:textSize="15sp" 
+        android:textColor="@color/Black"
+        android:textStyle="bold" />
+    
+    <TextView
+        android:id="@+id/textViewEducationLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/textViewLocationLabel"
+        android:layout_marginLeft="10dip"
+        android:layout_marginTop="15dip"
+        android:text="@string/education"
+        android:textSize="15sp"
+        android:textColor="@color/Facebook"
+        android:textStyle="bold" />
+    
+    <Button 
+        android:id="@+id/findFriendsButton"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_marginLeft="40dip"
+        android:text="@string/findFriends"
+        android:textColor="#FFFFFF"
+        android:background="@color/Facebook"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="10dip"
+        android:layout_marginBottom="10dip"/>
+    
+    <Button 
+        android:id="@+id/sendPushNoteButton"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="40dip"
+        android:text="@string/sendPushNote"
+        android:textColor="#FFFFFF"
+        android:background="@color/Facebook"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="10dip"
+        android:layout_marginBottom="10dip"/>
+        
+    <ListView
+        android:id="@+id/educationDetailsListView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dip"
+        android:layout_marginBottom="5dip"
+        android:layout_below="@+id/textViewEducationLabel"
+        android:layout_above="@+id/findFriendsButton"
+        android:layout_alignLeft="@+id/textViewNameLabel"
+        android:visibility="invisible" >
+    </ListView> 
+    
+
+</RelativeLayout>

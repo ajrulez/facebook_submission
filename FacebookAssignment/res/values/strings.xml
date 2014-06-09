@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">Facebook Assignment</string>
+    <string name="app_id">312769022221032</string>
+    <string name="name">Name:</string>
+    <string name="location">Location:</string>
+    <string name="education">Education Details:</string>
+    <string name="type">Type</string>
+    <string name="school">School</string>
+    <string name="year">Year</string>
+    <string name="concentrations">Concentration(s)</string>
+    <string name="findFriends">Find Friends</string>
+    <string name="friendsImage">Friends Display Pic</string>
+    <string name="sendPushNote">Send Push Note</string>
+    <string name="pushNoteHint">Enter your message here</string>
+    <string name="cancelPushNote">Cancel Push Note</string>
+    <string name="pushNoteDescription">Enter the message in the Edit field below, and tap \'Send Push Note\' button to send the push note.</string>
+    <string name="pushNoteTitle">Push Note Tapped</string>
+    <string name="pushNoteText">Push Note Text:\n%s</string>
+    <string name="dismissPushNoteText">Dismiss</string>
+    
+</resources>
