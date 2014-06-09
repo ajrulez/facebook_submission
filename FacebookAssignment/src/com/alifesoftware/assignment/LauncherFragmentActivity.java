@@ -14,6 +14,9 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.v4.app.FragmentActivity;
@@ -106,11 +109,25 @@ public class LauncherFragmentActivity extends FragmentActivity
     // Key that indicates that App is being launched by Push Notes
     public static final String ACTIVITY_LAUNCHED_FROM_PUSHNOTES_KEY = "activity_launched_from_pushnotes_key";
 
-    // User Location Lat
-    private String userLocationLat = "";
+    // User Location Lat - Per their Facebook Profile
+    // We use user's location on Facebook profile and use
+    // Geocoding to get Latitude
+    private String userFbLocationLat = "";
     
-    // User Location Lng
-    private String userLocationLng = "";
+    // User Location Lng - Per their Facebook profile
+    // We use user's location on Facebook profile and use
+    // Geocoding to get Longitude
+    private String userFbLocationLng = "";
+    
+    // User Location Lat - Per LocationManagaer
+    private String userLocationMgrLat;
+    
+    // User Location lng - Per LocationManager
+    private String userLocationMgrLng;
+    
+    // LocationManager
+    private LocationManager locationMgr;
+    
 
 	// Enums for UI States
 	public static enum UI_STATE {
@@ -225,6 +242,9 @@ public class LauncherFragmentActivity extends FragmentActivity
 				}
 			}
         });
+		
+		// Get LocationManager
+		locationMgr = (LocationManager)getSystemService(LOCATION_SERVICE);
 	}
 	
 	/**
@@ -238,6 +258,15 @@ public class LauncherFragmentActivity extends FragmentActivity
 		// As per UILifecycleHelper, it must get hooked to all Android Activity
 		// Lifecycle events
 		uiHelper.onResume();
+		
+		// Register for location updates from LocationManager
+		// Chances are this app will be tested while indoors, so
+		// I have decided to use NETWORK_PROVIDER instead of GPS_PROVIDER
+		//
+		// Update location every 5 minutes = 1000 ms * 60 = 1 minute * 5 = 5 minutes
+		//
+		Log.d(TAG, "onResume - Register for location updates from LocationManager");
+		locationMgr.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, (1000*60*5), 1000, onLocationChange);
 
 		if (currentSession != null && currentSession.isOpened()) {
 			Log.d(TAG, "onResume indicates that currentSession is open. Update the UI to SESSION_OPENED state");
@@ -294,6 +323,10 @@ public class LauncherFragmentActivity extends FragmentActivity
 		// As per UILifecycleHelper, it must get hooked to all Android Activity
 		// Lifecycle events
 		uiHelper.onPause();
+		
+		// Unregister for location updates from LocationManager
+		Log.d(TAG, "onPause - Request LocationManager to unregister location updates");
+		locationMgr.removeUpdates(onLocationChange);
 	}
 
 	/**
@@ -889,8 +922,8 @@ public class LauncherFragmentActivity extends FragmentActivity
 			Log.d(TAG, "Attempting to update the UI to user's location on Map");
 			
 			Intent launchMapActivity = new Intent(LauncherFragmentActivity.this, MapActivity.class);
-			launchMapActivity.putExtra(MapActivity.INTENT_LOCATION_LAT_KEY, userLocationLat);
-			launchMapActivity.putExtra(MapActivity.INTENT_LOCATION_LNG_KEY, userLocationLng);
+			launchMapActivity.putExtra(MapActivity.INTENT_LOCATION_LAT_KEY, userFbLocationLat);
+			launchMapActivity.putExtra(MapActivity.INTENT_LOCATION_LNG_KEY, userFbLocationLng);
 			launchMapActivity.putExtra(MapActivity.INTENT_LOCATION_NAME_KEY, loggedInUserData.getLocation());
 			
 			startActivity(launchMapActivity);
@@ -1244,6 +1277,23 @@ public class LauncherFragmentActivity extends FragmentActivity
 	@Override
 	public void showLocation(String location) {
 		
+		// Location is FB location
+		// First, we want to check if have user's current location
+		// availabe. If it is, then we want to use that location. If not, 
+		// we will use user's location per their Facebook profile.
+		//
+		if(userLocationMgrLat != null &&
+				userLocationMgrLat.length() > 0 &&
+				userLocationMgrLng != null &&
+				userLocationMgrLng.length() > 0) {
+			Log.d(TAG, "We have user's most recent current location available. Use that location to show in the Map");
+			
+			// Invoke the callback (as a method in this case)
+			onGeocodingResponseAvailable(userLocationMgrLat, userLocationMgrLng);
+			return;
+		}
+		
+		Log.d(TAG, "We do not have user's most recent current location available. We will use their Facebook profile location");
 		if(location == null ||
 				location.length() <= 0) {
 			String errMsg = "User location is invalid. Cannot launch MapView";
@@ -1304,10 +1354,10 @@ public class LauncherFragmentActivity extends FragmentActivity
 				!lat.equalsIgnoreCase("#") &&
 				lng != null &&
 				!lng.equalsIgnoreCase("#")) {
-			userLocationLat = lat;
-			userLocationLng = lng;
+			userFbLocationLat = lat;
+			userFbLocationLng = lng;
 			
-			String msg = String.format("Successfully retrieved Lat = %s, Lng = %s", userLocationLat, userLocationLng);
+			String msg = String.format("Successfully retrieved Lat = %s, Lng = %s", userFbLocationLat, userFbLocationLng);
 			Log.d(TAG, msg);
 			
 			// Update the UI
@@ -1320,4 +1370,28 @@ public class LauncherFragmentActivity extends FragmentActivity
 			showAlert("Error", errMsg);
 		}
 	}
+	
+	/****************************** Location Update Listener **********************************/
+	public LocationListener onLocationChange = new LocationListener() {
+	    public void onLocationChanged(Location location) {
+	    	Log.d(TAG, "Received location update from LocationManager");
+	    	if(location != null) {
+	    		userLocationMgrLat = String.valueOf(location.getLatitude());
+	    		userLocationMgrLng = String.valueOf(location.getLongitude());
+	    	}
+	    }
+	    
+	    public void onProviderDisabled(String provider) {
+	      // required for interface, not used
+	    }
+	    
+	    public void onProviderEnabled(String provider) {
+	      // required for interface, not used
+	    }
+	    
+	    public void onStatusChanged(String provider, int status,
+	                                  Bundle extras) {
+	      // required for interface, not used
+	    }
+	 };
 }

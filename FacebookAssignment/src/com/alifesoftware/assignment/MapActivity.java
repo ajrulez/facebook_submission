@@ -81,9 +81,23 @@ public class MapActivity extends FragmentActivity {
      * 
      */
     private double doubleToThreeDecimals(double value) {
-    	DecimalFormat df = new DecimalFormat("#.000"); 
-    	String newVal = df.format(value);
+    	String strValue = null;
+    	try {
+    		DecimalFormat df = new DecimalFormat("#.000"); 
+    		String newVal = df.format(value);
+    		strValue = newVal;
+    	}
     	
-    	return Double.parseDouble(newVal);
+    	catch(Exception e) {
+    		e.printStackTrace();
+    	}
+    	
+    	if(strValue != null && 
+    			strValue.length() > 0) {
+    		return Double.parseDouble(strValue);
+    	}
+    	
+    	// Something went wrong, just return the original value
+    	return value;
     }
 }
