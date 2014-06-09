@@ -65,7 +65,6 @@ public class MapActivity extends FragmentActivity {
         if(userLocation != null) {
         	map.addMarker(new MarkerOptions()
                 	.title(locationName)
-                	.snippet("Your Location as per Facebook")
                 	.position(userLocation));
         	
         	// Move the camera instantly to User Location with a zoom of 15.
