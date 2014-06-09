@@ -328,6 +328,9 @@ public class LauncherFragmentActivity extends FragmentActivity
 		// Unregister for location updates from LocationManager
 		Log.d(TAG, "onPause - Request LocationManager to unregister location updates");
 		locationMgr.removeUpdates(onLocationChange);
+		
+		// Clear the cache
+		FriendUserData.clearCache();
 	}
 
 	/**

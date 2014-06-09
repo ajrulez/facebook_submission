@@ -176,9 +176,9 @@ public class FriendUserData implements Parcelable {
 	}
 	
 	/**
-	 * Method to clear the cache - Internal Method
+	 * Method to clear the cache
 	 */
-	private static synchronized void clearCache() {
+	public static synchronized void clearCache() {
 		cache.clear();
 	}
 	

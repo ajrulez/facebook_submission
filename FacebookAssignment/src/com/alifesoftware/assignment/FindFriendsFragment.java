@@ -3,6 +3,7 @@ package com.alifesoftware.assignment;
 import java.util.List;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -10,6 +11,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -123,8 +125,8 @@ public class FindFriendsFragment extends BaseHeadlessFragment {
 		// Name
 		TextView tvName;
 		
-		// ProfilePictureView
-		ProfilePictureView profilePictureView;
+		// ImageView for Profile Picture
+		ImageView profilePictureView;
 	}
 	
 	/**
@@ -176,8 +178,7 @@ public class FindFriendsFragment extends BaseHeadlessFragment {
                 // we want to bind data to.
                 holder = new ViewHolder();
                 holder.tvName = (TextView) convertView.findViewById(R.id.textViewFriendsName);
-                holder.profilePictureView = (ProfilePictureView) convertView.findViewById(R.id.friendsPictureThumbnailView);
-                holder.profilePictureView.setPresetSize(ProfilePictureView.SMALL);
+                holder.profilePictureView = (ImageView) convertView.findViewById(R.id.friendsPictureThumbnailView);
                 
                 convertView.setTag(holder);
                 
@@ -222,7 +223,17 @@ public class FindFriendsFragment extends BaseHeadlessFragment {
 					position < arrFriendsData.size()) {
 				// Bind the data efficiently with the holder.
 				holder.tvName.setText(arrFriendsData.get(position).getName());
-				holder.profilePictureView.setProfileId(arrFriendsData.get(position).getId());
+				
+				// Load the profile bitmap in InmageView
+				Bitmap bmp;
+				if(FriendUserData.getBitmapCache().size() > 0 &&
+						(bmp = FriendUserData.getBitmapCache().get(arrFriendsData.get(position).getId())) != null) {
+					holder.profilePictureView.setImageBitmap(bmp);
+				}
+				
+				else {
+					holder.profilePictureView.setImageResource(R.drawable.ic_launcher);
+				}
 			}
            
 			return convertView;                   
