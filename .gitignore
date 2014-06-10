@@ -24,3 +24,5 @@ FacebookAssignment/bin/FacebookAssignment.apk
 FacebookAssignment/bin/R.txt
 
 *.ap_
+
+*.class
