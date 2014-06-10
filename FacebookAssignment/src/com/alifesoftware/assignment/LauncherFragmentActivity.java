@@ -682,7 +682,7 @@ public class LauncherFragmentActivity extends FragmentActivity
 
 			else {
 				Log.e(TAG, "Failed to parse user's friends list because graph map data is empty");
-				return null;
+				return friendList;
 			}
 		}
 		
