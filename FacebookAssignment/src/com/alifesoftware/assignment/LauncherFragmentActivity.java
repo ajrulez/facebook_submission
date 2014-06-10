@@ -30,6 +30,7 @@ import android.widget.EditText;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
+import com.alifesoftware.assignment.interfaces.IFriendsCacheRefreshReceiver;
 import com.alifesoftware.assignment.interfaces.IGeocodingResponseReceiver;
 import com.alifesoftware.assignment.interfaces.IPushNotesRegistrationReceiver;
 import com.alifesoftware.assignment.interfaces.IPushNotesSendResultReceiver;
@@ -327,6 +328,9 @@ public class LauncherFragmentActivity extends FragmentActivity
 		// Unregister for location updates from LocationManager
 		Log.d(TAG, "onPause - Request LocationManager to unregister location updates");
 		locationMgr.removeUpdates(onLocationChange);
+		
+		// Clear the cache
+		FriendUserData.clearCache();
 	}
 
 	/**
@@ -678,7 +682,7 @@ public class LauncherFragmentActivity extends FragmentActivity
 
 			else {
 				Log.e(TAG, "Failed to parse user's friends list because graph map data is empty");
-				return null;
+				return friendList;
 			}
 		}
 		
@@ -998,10 +1002,32 @@ public class LauncherFragmentActivity extends FragmentActivity
 									return;
 								}
 
-								Log.d(TAG, "User's friend response parsed successfully. Update the UI to show user's friends");
+								// If the size of friend list and bitmap cache is same, update the UI
+								if(friendsListData.size() == FriendUserData.getBitmapCache().size()) {
+									Log.d(TAG, "User's friend response parsed successfully. Update the UI to show user's friends");
+									
+									// Update UI
+									updateUI(UI_STATE.FIND_FRIENDS);
+								}
 								
-								// Update UI
-								updateUI(UI_STATE.FIND_FRIENDS);
+								else {
+									Log.d(TAG, "User's friend response parsed successfully. Need to update the Bitmap cache");
+									String[] userIds = new String[friendsListData.size()];
+									
+									for(int num = 0; num < friendsListData.size(); num++) {
+										userIds[num] = friendsListData.get(num).getId();
+									}
+									
+									FriendUserData.refreshCache(userIds, LauncherFragmentActivity.this, new IFriendsCacheRefreshReceiver() {
+										@Override
+										public void onCacheRefreshed() {
+											Log.d(TAG, "User's friends bitmap cache is refreshed. Update the UI to show user's friends");
+											
+											// Update UI
+											updateUI(UI_STATE.FIND_FRIENDS);
+										}
+									});
+								}
 							}
 
 							else {
